@@ -211,6 +211,7 @@ describe '#update_quality' do
           end
         end
       end
+      
     end
   end
 

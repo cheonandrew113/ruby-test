@@ -1,47 +1,70 @@
-require 'award'
+require './award'
+
+
+# calling a as "award"
+def update_blue_star_quality(a)
+  if a.expires_in > 0
+    #  quality reduces by 2 before exp
+    a.quality -= 2
+  else
+    # Quality reduces by 4 after exp
+    a.quality -= 4
+  end
+
+  # time decrementation
+  a.expires_in -= 1
+
+  # quality cannot be negative, so return positive val
+  a.quality=a.quality <= 0 ? 0 :  a.quality
+
+  a
+end
 
 def update_quality(awards)
-  awards.each do |award|
-    if award.name != 'Blue First' && award.name != 'Blue Compare'
-      if award.quality > 0
-        if award.name != 'Blue Distinction Plus'
-          award.quality -= 1
+  awards.each do |a|
+
+    return update_blue_star_quality(a) if a.name == 'Blue Star'
+
+    if a.name != 'Blue First' && a.name != 'Blue Compare'
+      if a.quality > 0
+        if a.name != 'Blue Distinction Plus'
+          a.quality -= 1
         end
       end
     else
-      if award.quality < 50
-        award.quality += 1
-        if award.name == 'Blue Compare'
-          if award.expires_in < 11
-            if award.quality < 50
-              award.quality += 1
+      if a.quality < 50
+        a.quality += 1
+        if a.name == 'Blue Compare'
+          if a.expires_in < 11
+            if a.quality < 50
+              a.quality += 1
             end
           end
-          if award.expires_in < 6
-            if award.quality < 50
-              award.quality += 1
+          if a.expires_in < 6
+            if a.quality < 50
+              a.quality += 1
             end
           end
         end
       end
     end
-    if award.name != 'Blue Distinction Plus'
-      award.expires_in -= 1
+    if a.name != 'Blue Distinction Plus'
+      a.expires_in -= 1
     end
-    if award.expires_in < 0
-      if award.name != 'Blue First'
-        if award.name != 'Blue Compare'
-          if award.quality > 0
-            if award.name != 'Blue Distinction Plus'
-              award.quality -= 1
+    if a.expires_in < 0
+      if a.name != 'Blue First'
+        if a.name != 'Blue Compare'
+          if a.quality > 0
+            if a.name != 'Blue Distinction Plus'
+              a.quality -= 1
             end
           end
         else
-          award.quality = award.quality - award.quality
+          a.quality = a.quality - a.quality
         end
       else
-        if award.quality < 50
-          award.quality += 1
+        if a.quality < 50
+          a.quality += 1
         end
       end
     end
